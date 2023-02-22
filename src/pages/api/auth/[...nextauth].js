@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "@/scripts/Prisma";
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
 
@@ -16,19 +16,22 @@ export default NextAuth({
                 if (_.isEmpty(credentials.username) || _.isEmpty(credentials.password))
                     return null;
                 
-                let prisma = new PrismaClient();
+                let user = null;
                 
                 try {
-                    let userdata = await prisma.user.findMany({
+                    user = await prisma.user.findMany({
                         where: { email: credentials.username }
                     });
-
-                    console.log(userdata);
                 }
-                catch (e) { console.error(e) }
+                catch (e) { return null; }
 
-                return null;
+                if (_.isEmpty(user)) return null;
+
+                if (bcrypt.compareSync(credentials.password, user[0].password)) {
+                    return { id: user[0].id, email: user[0].email };
+                }
+                else return null;
             }
         }),
-    ],
+    ]
 });
