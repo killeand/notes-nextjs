@@ -8,10 +8,6 @@ export default NextAuth({
     providers: [
         CredentialsProvider({
             name: "Credentials",
-            credentials: {
-                username: { label: "username", type: "text", placeholder: "email@domain.com" },
-                password: { label: "password", type: "password" }
-            },
             async authorize(credentials, req) {
                 if (_.isEmpty(credentials.username) || _.isEmpty(credentials.password))
                     return null;
@@ -33,5 +29,9 @@ export default NextAuth({
                 else return null;
             }
         }),
-    ]
+    ],
+    pages: {
+        signIn: "/auth/signin",
+        
+    }
 });

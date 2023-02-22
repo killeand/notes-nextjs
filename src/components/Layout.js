@@ -1,8 +1,9 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useQueryClient, useQuery, useMutation } from 'react-query';
 
 export default function Layout({ children }) {
     const { data: session } = useSession();
@@ -18,7 +19,7 @@ export default function Layout({ children }) {
                     console.log("error", error);
                 })
         }
-    }, [session]);
+    }, []);
 
     function RenderGroups() {
         if (groups.length == 0)
@@ -46,7 +47,7 @@ export default function Layout({ children }) {
                     {session && (<Link onClick={signOut} href="#">Sign Out</Link>)}
                     {!session && (
                         <>
-                            <Link onClick={signIn} href="#">Sign In</Link>
+                            <Link href="/auth/signin">Sign In</Link>
                             <Link href="/auth/signup">Sign Up</Link>
                         </>
                     )}
