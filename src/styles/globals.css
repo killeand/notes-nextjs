@@ -15,5 +15,5 @@ h1 {
 }
 
 nav a {
-    @apply btn btn-primary btn-sm rounded-none w-full;
+    @apply btn btn-primary btn-sm rounded-none flex-grow;
 }

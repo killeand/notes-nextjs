@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-    id       String @id @default(cuid())
+    id       String @id
     email    String
     password String
     salt     String
@@ -22,7 +22,7 @@ model User {
 }
 
 model NoteGroup {
-    id     String @id @default(cuid())
+    id     String @id
     userid String
     user   User   @relation(fields: [userid], references: [id], onDelete: Cascade)
     name   String
@@ -31,7 +31,7 @@ model NoteGroup {
 }
 
 model Note {
-    id      String    @id @default(cuid())
+    id      String    @id
     userid  String
     user    User      @relation(fields: [userid], references: [id], onDelete: Cascade)
     groupid String

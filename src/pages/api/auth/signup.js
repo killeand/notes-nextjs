@@ -1,6 +1,7 @@
 import { prisma } from "@/scripts/Prisma";
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
+import { ulid } from "ulid";
 
 export default async function handler(req, res) {
     if (req.method != "PUT" || req.headers['content-type'] != "application/json") {
@@ -34,6 +35,7 @@ export default async function handler(req, res) {
         await prisma.user.createMany({
             data: [
                 {
+                    id: ulid(),
                     email: req.body.username,
                     password: pass,
                     salt: salt,
