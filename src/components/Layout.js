@@ -46,7 +46,7 @@ export default function Layout({ children }) {
             return (<div>Loading...</div>);
         
         if (groups.isSuccess && groups.data.message.length == 0)
-            return (<div>No Note Groups Yet...</div>);
+            return (<div>No Groups Yet...</div>);
         
         return groups.data.message.map((group, index) => {
             return (
@@ -84,8 +84,9 @@ export default function Layout({ children }) {
                     )}
                 </nav>
                 {session && (
-                    <>
-                        <nav className="flex flex-col mx-3">
+                    <>  
+                        <div className="text-center text-xl font-bold border-b">Note Groups</div>
+                        <nav className="flex flex-col mx-3 space-y-1">
                             {RenderGroups()}
                         </nav>
                         <div className="flex flex-row mx-3 items-center border border-black rounded-xl">

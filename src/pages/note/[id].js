@@ -1,26 +1,31 @@
-
-import Layout from "@/components/Layout";
+import { getServerSession } from "next-auth";
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import axios from "axios";
 import _ from 'lodash';
-import withAuth from '@/scripts/withAuth';
 
 export default function Note({ id }) {
     return (
-        <Layout>
-            <div>{id}</div>
-        </Layout>
+        <div>{id}</div>
     );
 }
 
-export const getServerSideProps = withAuth(() => { console.log("inner"); return { props: {} } })
+export async function getServerSideProps(context) {
+    let g = await axios.get(`/api/group/${context.params.id}`)
+    console.log(g);
 
-// export async function getServerSideProps(context) {
-//     if (!context.params.id) {
-//         return { redirect: { destination: "/" } }
-//     }
+    const session = await getServerSession(context.req, context.res, authOptions);
 
-//     if (!context.params.id.match(/[0-7][0-9A-HJKMNP-TV-Z]{25}/)) {
-//         return { redirect: { destination: "/" } }
-//     }
+    if (!session) {
+        return { redirect: { destination: "/" } }
+    }
 
-//     return { props: { id: context.params.id } };
-// }
+    if (!context.params.id) {
+        return { redirect: { destination: "/" } }
+    }
+
+    if (!context.params.id.match(/[0-7][0-9A-HJKMNP-TV-Z]{25}/)) {
+        return { redirect: { destination: "/" } }
+    }
+
+    return { props: { id: context.params.id } };
+}
