@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import axios from 'axios';
+import { axiosClient } from '@/scripts/Axios';
 import { useQueryClient, useQuery, useMutation } from 'react-query';
 import _ from 'lodash';
 import { useState } from 'react';
@@ -14,17 +14,17 @@ export default function Layout({ children }) {
     const router = useRouter();
 
     const groups = useQuery(["notegroup"], () => {
-        return axios.get("/api/group/list").then((response) => response.data);
+        return axiosClient.get("/api/group/list").then((response) => response.data);
     }, { enabled: (!_.isNil(session)) });
 
     const addgroup = useMutation((data) => {
-        return axios.put("/api/group/create", data).then((response) => response.data);
+        return axiosClient.put("/api/group/create", data).then((response) => response.data);
     }, {
         onSuccess: () => qc.invalidateQueries(['notegroup'])
     });
 
     const delgroup = useMutation((data) => {
-        return axios.delete("/api/group/delete", { data: data }).then((response) => response.data);
+        return axiosClient.delete("/api/group/delete", { data: data }).then((response) => response.data);
     }, {
         onSuccess: () => qc.invalidateQueries(['notegroup'])
     });

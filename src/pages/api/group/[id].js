@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     const secret = process.env.NEXTAUTH_SECRET;
     const token = await getToken({ req, secret });
 
-    console.log(req.query);
+    console.log(req.query, req.method, token);
     
     if (req.method != "GET" || !token) {
         res.status(400).json({ response: "error", message: "Improper request" });

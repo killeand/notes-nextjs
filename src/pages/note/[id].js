@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import axios from "axios";
+import { axiosClient } from "@/scripts/Axios";
+import { useQuery } from 'react-query';
 import _ from 'lodash';
 
 export default function Note({ id }) {
@@ -10,9 +11,6 @@ export default function Note({ id }) {
 }
 
 export async function getServerSideProps(context) {
-    let g = await axios.get(`/api/group/${context.params.id}`)
-    console.log(g);
-
     const session = await getServerSession(context.req, context.res, authOptions);
 
     if (!session) {
